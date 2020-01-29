@@ -6,82 +6,71 @@ import collections.LinkedList;
 import java.io.Serializable;
 import tools.Numbers;
 import tools.Text;
-//import tools.Sorter;
 
 
 /**
- * ChildTestClass.java - a test class for randomly generated data types
+ * TestClass.java - a test class for randomly generated data types
  * 
  * @author Mr. Wachs 
  * @since Dec 16, 2016
  */
-public class TestClass extends BaseTestClass implements Serializable, 
+public class TestClass extends BaseClass implements Serializable, 
         Comparable<Object>
 {
-        
-    /** Class associated with this class */
-    public AssociateTestClass associateTestClass;
+
     
+    /** Class associated with this class, randomly generated data */
+    public AssociateClass associate = new AssociateClass(1); 
+    /** Class associated with this class, randomly generated data */
+    public AssociateClass[] associateArray;    
     /** Randomly generated data for this class */
-    public boolean[] list1;
+    public boolean[] booleanArray;
     /** Randomly generated data for this class */
-    public int[] list2;
+    public int[] integerArray;
     /** Randomly generated data for this class */
-    public double[] list3;
+    public double[] doubleArray;
     /** Randomly generated data for this class */
-    public char[] list4;
+    public char[] characterArray;    
     /** Randomly generated data for this class */
-    public String[] list5;
-    
-    private String key;
-    
-    
+    public String[] wordsArray;    
+    /** Text class for generating text, shared */
+    public static Text text = new Text();
+    /** Numbers class for generating numbers, shared */
+    public static Numbers numbers = new Numbers();
+    /** constant for characters */
+    public static final char ALPHA_LOW = 'a';
+    /** constant for characters */
+    public static final char ALPHA_HIGH = 'z';
+    /** constant to delimit member data */
+    public static final String DELIMIT = "|";    
+    /** The text of all member data stored */
+    private String values;
+            
     /** 
      * Default constructor 
      */
     public TestClass() {
-        super();      
-        associateTestClass = new AssociateTestClass();
-        list1 = new boolean[WORD_LENGTH];
-        list2 = new int[WORD_LENGTH];
-        list3 = new double[WORD_LENGTH];
-        list4 = new char[WORD_LENGTH];
-        list5 = new String[WORD_LENGTH];
-        list1 = new Numbers().random(WORD_LENGTH);
-        list2 = new Numbers().random(0, WORD_LENGTH, WORD_LENGTH);
-        list3 = new Numbers().random(0d, (double)WORD_LENGTH, WORD_LENGTH);
-        list4 = new Text().random('a', 'z', WORD_LENGTH);
-        list5 = new Text().random('a', 'z', WORD_LENGTH, WORD_LENGTH);
-        key   = generateKey();
+        this(5);
     }
-        
+    
     /**
      * Constructor sets class properties
      * 
-     * @param theBoolean the boolean class property
-     * @param theInteger the int class property
-     * @param theDouble the double class property
-     * @param theCharacter the char class property
-     * @param theString the String class property
+     * @param length the size to make all arrays and random values
      */
-    public TestClass(boolean theBoolean, 
-                     int theInteger, 
-                     double theDouble,
-                     char theCharacter,
-                     String theString) {
-        super(theBoolean,theInteger,theDouble,theCharacter);
-        associateTestClass = new AssociateTestClass(theString);
-        list1 = new boolean[WORD_LENGTH];
-        list2 = new int[WORD_LENGTH];
-        list3 = new double[WORD_LENGTH];
-        list4 = new char[WORD_LENGTH];
-        list5 = new String[WORD_LENGTH];
-        for (int i = 0; i < list1.length; i++) list1[i] = theBoolean;
-        for (int i = 0; i < list2.length; i++) list2[i] = theInteger;
-        for (int i = 0; i < list3.length; i++) list3[i] = theDouble;
-        for (int i = 0; i < list4.length; i++) list4[i] = theCharacter;
-        for (int i = 0; i < list5.length; i++) list5[i] = theString;
-        key = generateKey();
+    public TestClass(int length) {
+        super(length);   
+        associate      = new AssociateClass(length);
+        booleanArray   = numbers.random(length);
+        integerArray   = numbers.random(0, length, length);
+        doubleArray    = numbers.random(0d, (double)length, length);
+        characterArray = text.random(ALPHA_LOW, ALPHA_LOW, length);
+        wordsArray     = text.randomWords(length);
+        associateArray = new AssociateClass[length];        
+        for (int i = 0; i < length; i++) {
+            associateArray[i] = new AssociateClass(length);
+        }
+//        generateValues();
     }
 
     /**
@@ -91,7 +80,7 @@ public class TestClass extends BaseTestClass implements Serializable,
      */
     @Override
     public String toString() {           
-        return key;
+        return values;
     }
     
     /**
@@ -100,32 +89,27 @@ public class TestClass extends BaseTestClass implements Serializable,
      * @return a clone of the object with new memory
      */
     public TestClass clone() {
-        TestClass testClass = new TestClass();
-        testClass.data1 = this.data1;
-        testClass.data2 = this.data2;
-        testClass.data3 = this.data3;
-        testClass.data4 = this.data4;
-        testClass.associateTestClass = this.associateTestClass.clone();        
-        testClass.list1 = new boolean[this.list1.length];        
-        for (int i = 0; i < this.list1.length; i++) {
-            testClass.list1[i] = this.list1[i];
-        }        
-        testClass.list2 = new int[this.list2.length];
-        for (int i = 0; i < this.list2.length; i++) {
-            testClass.list2[i] = this.list2[i];
-        }        
-        testClass.list3 = new double[this.list3.length];
-        for (int i = 0; i < this.list3.length; i++) {
-            testClass.list3[i] = this.list3[i];
-        }        
-        testClass.list4 = new char[this.list4.length];
-        for (int i = 0; i < this.list4.length; i++) {
-            testClass.list4[i] = this.list4[i];
-        }        
-        testClass.list5 = new String[this.list5.length];
-        for (int i = 0; i < this.list5.length; i++) {
-            testClass.list5[i] = this.list5[i];
-        }                
+        TestClass testClass      = new TestClass();
+        testClass.associate      = this.associate.clone();        
+        testClass.theBoolean     = this.theBoolean;
+        testClass.theInteger     = this.theInteger;
+        testClass.theDouble      = this.theDouble;
+        testClass.theCharacter   = this.theCharacter;
+        testClass.booleanArray   = new boolean[length]; 
+        testClass.integerArray   = new int[length];
+        testClass.doubleArray    = new double[length];
+        testClass.characterArray = new char[length];
+        testClass.wordsArray     = new String[length];        
+        testClass.associateArray = new AssociateClass[length];
+        for (int i = 0; i < length; i++) {
+            testClass.booleanArray[i]   = this.booleanArray[i];
+            testClass.integerArray[i]   = this.integerArray[i];
+            testClass.doubleArray[i]    = this.doubleArray[i];
+            testClass.characterArray[i] = this.characterArray[i];
+            testClass.wordsArray[i]     = this.wordsArray[i];            
+            testClass.associateArray[i] = this.associateArray[i];
+        }           
+        testClass.generateValues();
         return testClass;
     }
     
@@ -138,8 +122,8 @@ public class TestClass extends BaseTestClass implements Serializable,
     @Override
     public boolean equals(Object object) {      
         try {  
-            TestClass testClass = (TestClass)object;
-            return this.toString().equals(testClass.toString());
+            TestClass that = (TestClass)object;
+            return this.toString().equals(that.toString());
         }
         catch (NullPointerException | ClassCastException e) {
             System.out.println("equals() Error: " + e.toString());
@@ -159,8 +143,8 @@ public class TestClass extends BaseTestClass implements Serializable,
      */
     @Override
     public int compareTo(Object object) {
-        TestClass that = (TestClass)object;
         try {  
+            TestClass that = (TestClass)object;
             return this.toString().compareTo(that.toString());   
         }
         catch (NullPointerException | ClassCastException e) {
@@ -249,98 +233,69 @@ public class TestClass extends BaseTestClass implements Serializable,
         return array;
     }
     
-//    /**
-//     * Generates and returns a array of sorted random objects
-//     * 
-//     * @param size the size of the array to generate
-//     * @return a array of sorted random objects
-//     */
-//    public static TestClass[] generateSortedArray(int size) {
-//        TestClass[] array = generateArray(size);
-//        new Sorter().quick(array);
-//        return array;
-//    }
-//    
-//    /**
-//     * Generates and returns a LinkedList of sorted random objects
-//     * 
-//     * @param size the size of the list to generate
-//     * @return a LinkedList of sorted random objects
-//     */
-//    public static LinkedList generateSortedList(int size) {
-//        LinkedList linkedList = generateList(size);
-//        new Sorter().quick(linkedList);
-//        return linkedList;
-//    }
-//    
-//    /**
-//     * Generates and returns a array of sorted non duplicate random objects
-//     * 
-//     * @param size the size of the array to generate
-//     * @return a array of sorted unique random objects
-//     */
-//    public static TestClass[] generateUniqueSortedArray(int size) {
-//        TestClass[] array = generateUniqueArray(size);
-//        new Sorter().quick(array);
-//        return array;
-//    }
-//    
-//    /**
-//     * Generates and returns a LinkedList of sorted non duplicate random 
-//     * objects
-//     * 
-//     * @param size the size of the list to generate
-//     * @return a LinkedList of sorted unique random objects
-//     */
-//    public static LinkedList generateUniqueSortedList(int size) {
-//        LinkedList linkedList = generateUniqueList(size);
-//        new Sorter().quick(linkedList);
-//        return linkedList;
-//    }
-
     /**
-     * Generates a key value from all the properties of this class, it's 
-     * inherited classes, and associated classes
+     * Returns a hash code value for the object from all the properties of 
+     * this class, its inherited classes, and associated classes. It returns 
+     * a consistent code each time which is a 1 or 2 digit number between 0-99
      * 
-     * @return a string value (number)
+     * @return a hash code value for this object 
      */
-    private String generateKey() {
-        int grandTotal = Integer.parseInt(super.toString());
-        grandTotal += Integer.parseInt(associateTestClass.toString());
-        int total = 0;
-        for (int i = 0; i < list1.length; i++) 
-            total += (int)(list1[i] ? 1 : 0);
-        grandTotal += total; 
-        total = 0;
-        for (int i = 0; i < list2.length; i++) 
-            total += list2[i];
-        grandTotal += total;
-        total = 0;
-        for (int i = 0; i < list3.length; i++) 
-            total += (int)list3[i];
-        grandTotal += total;
-        total = 0;
-        for (int i = 0; i < list4.length; i++) 
-            total += (int)list4[i];
-        grandTotal += total;        
-        total = 0;
-        for (int i = 0; i < list5.length; i++) {
-            int subTotal = 0;
-            for (int j = 0; j < list5[i].length(); j++) {
-                subTotal += (int)(list5[i].charAt(j));
-            }
-            total += subTotal;
-        }
-        grandTotal += total; 
-        String text   = Integer.toString(grandTotal);        
-        int    spot1  = new Numbers().random(0, text.length()-1);
-        int    spot2  = new Numbers().random(0, text.length()-1);
-        char   value1 = text.charAt(spot1);
-        char   value2 = text.charAt(spot2);
-        String value  = "" + value1 + "" + value2;
-        int    number = Integer.parseInt(value);
-        String answer = "" + number;
-        return answer;
+    @Override
+    public int hashCode() { 
+        return TestClass.generate(values);
     }
 
+    /**
+     * Generates a one or two digit number (between 0 - 99) based on a hash
+     * algorithm with the passed text
+     * 
+     * @param text the text to generate a number from
+     * @return the one or two digit integer (between 0-99)
+     */
+    public static int generate(String text) {
+        String[] values = text.split("[|]");
+        String allText = "";
+        for (int i = 0; i < values.length; i++) {
+            allText += values[i];
+        }
+        String number = "0";
+        int oneDigit = TestClass.numbers.random(0,100);
+        if (oneDigit >= 0 && oneDigit <= 9) {
+            int  mid       = (allText.length()-1) / 2;
+            char character = allText.charAt(mid);
+            number         = character + "";
+        }
+        else {
+            int  mid1       = (allText.length()-1) / 2;
+            int  mid2       = mid1 / 2;
+            char character1 = allText.charAt(mid1);
+            char character2 = allText.charAt(mid2);
+            number          = character1 + "" + character2;
+            
+        }
+        return Integer.parseInt(number);
+    }
+    
+    /**
+     * Generates all the values from all the properties of this class, its 
+     * inherited classes, and associated classes.
+     */
+    protected void generateValues() {
+        values  = Boolean.toString(super.theBoolean)     + TestClass.DELIMIT; 
+        values += Integer.toString(super.theInteger)     + TestClass.DELIMIT; 
+        values += Double.toString(super.theDouble)       + TestClass.DELIMIT; 
+        values += Character.toString(super.theCharacter) + TestClass.DELIMIT; 
+        values += associate.theString + TestClass.DELIMIT; 
+        for (int i = 0; i < length; i++) {
+            values += Boolean.toString(booleanArray[i])     + TestClass.DELIMIT; 
+            values += Integer.toString(integerArray[i])     + TestClass.DELIMIT; 
+            values += Double.toString(doubleArray[i])       + TestClass.DELIMIT; 
+            values += Character.toString(characterArray[i]) + TestClass.DELIMIT;
+            values += associateArray[i].theString           + TestClass.DELIMIT;
+            for (int j = 0; j < wordsArray[i].length(); j++) {
+                values += wordsArray[j] + TestClass.DELIMIT;                
+            }
+        }
+    }
+    
 }

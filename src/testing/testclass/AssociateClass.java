@@ -4,41 +4,42 @@ package testing.testclass;
 
 /** required imports */
 import java.io.Serializable;
-import tools.Numbers;
-import tools.Text;
 
 /**
- * AssociateTestClass.java - another class associated with the test class
- * class of the test class
+ * AssociateClass.java - another class associated with the test class
+ class of the test class
  * 
  * @author Mr. Wachs
  * @since Dec 16, 2016
  */
-public class AssociateTestClass implements Serializable, Comparable<Object>
+public class AssociateClass implements Serializable, Comparable<Object>
 {
     
     /** Randomly generated data for this class */
-    private String data5;
+    public String theString;
+    /** The text of all member data stored */
+    private String values;
     
-    private String key;
     
-    
-    /** 
-     * Default constructor 
+    /**
+     * Default Constructor sets class properties
+     * 
+     * @param length the size to make all arrays and random values
      */
-    public AssociateTestClass() {
-        data5 = new Text().random(5);
-        key   = generateKey();
+    public AssociateClass(int length) {
+        theString = TestClass.text.random(length);
+        values    = theString + TestClass.DELIMIT;
     }
     
-    /** 
-     * Constructor sets class properties
+    /**
+     * Constructor sets class properties 
      * 
-     * @param data5 the String class property
+     * @param values text of all member data stored
+     * @param theString string value
      */
-    public AssociateTestClass(String data5) {
-        this.data5 = data5;   
-        key        = generateKey();
+    public AssociateClass(String values, String theString) {
+        this.values    = values;
+        this.theString = theString;
     }
     
     /**
@@ -48,7 +49,7 @@ public class AssociateTestClass implements Serializable, Comparable<Object>
      */
     @Override
     public String toString() {  
-        return key;
+        return values;
     }
         
     /**
@@ -60,8 +61,8 @@ public class AssociateTestClass implements Serializable, Comparable<Object>
     @Override
     public boolean equals(Object object) {
         try {  
-            AssociateTestClass associateTestClass = (AssociateTestClass)object;
-            return this.toString().equals(associateTestClass.toString());
+            AssociateClass that = (AssociateClass)object;
+            return this.toString().equals(that.toString());
         }
         catch (NullPointerException | ClassCastException e) {
             System.out.println("equals() Error: " + e.toString());
@@ -75,8 +76,8 @@ public class AssociateTestClass implements Serializable, Comparable<Object>
      * @return a clone of the object with new memory
      */
     @Override
-    public AssociateTestClass clone() {
-        return new AssociateTestClass(this.data5);
+    public AssociateClass clone() {
+        return new AssociateClass(this.values,this.theString);
     }
     
     /**
@@ -90,9 +91,9 @@ public class AssociateTestClass implements Serializable, Comparable<Object>
      *          lexicographically greater than the argument
      */
     @Override
-    public int compareTo(Object object) {
-        AssociateTestClass that = (AssociateTestClass)object;
+    public int compareTo(Object object) {        
         try {
+            AssociateClass that = (AssociateClass)object;
             return this.toString().compareTo(that.toString()); 
         }
         catch (NullPointerException | ClassCastException e) {
@@ -100,25 +101,17 @@ public class AssociateTestClass implements Serializable, Comparable<Object>
             return -1;
         }
     }
-    
+
     /**
-     * Generates a key value from all the properties of this class, it's 
-     * inherited classes, and associated classes
+     * Returns a hash code value for the object from all the properties of 
+     * this class, its inherited classes, and associated classes. It returns 
+     * a consistent code each time which is a 1 or 2 digit number between 0-99
      * 
-     * @return a string value (number)
+     * @return a hash code value for this object 
      */
-    private String generateKey() {
-        int grandTotal = 0;
-        for (int i = 0; i < data5.length(); i++) {
-            grandTotal += (int)(data5.charAt(i));
-        }
-        String text   = Integer.toString(grandTotal);        
-        int    spot   = new Numbers().random(0, text.length()-1);
-        char   value  = text.charAt(spot);
-        String thing  = "" + value;
-        int    number = Integer.parseInt(thing);
-        String answer = "" + number;
-        return answer;
+    @Override
+    public int hashCode() {
+        return TestClass.generate(values);
     }
-    
+        
 }

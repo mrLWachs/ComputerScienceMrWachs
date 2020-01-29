@@ -24,10 +24,10 @@ public class ComputerScience42SIB
      */
     public ComputerScience42SIB() {
         Simulator.header("Computer Science 42SIB starting..."); 
-        new PermanentStorageTest();
         new SearchSortTest();
-        new StacksQueuesTest();
-        new TreesTest();        
+//        new PermanentStorageTest();
+//        new StacksQueuesTest();
+//        new TreesTest();        
         Simulator.header("Computer Science 42SIB complete!");
     }
     

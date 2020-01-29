@@ -5,6 +5,7 @@ package testing.cs42sib;
 /** required imports */
 import io.Simulator;
 import io.System;
+import testing.testclass.TestClass;
 
 
 /**
@@ -22,7 +23,10 @@ public class SearchSortTest
     public SearchSortTest() {
         Simulator.header("Searching and Sorting Test started...");
         
-        
+        for (int i = 0; i < 1; i++) {
+            TestClass test = new TestClass();
+            System.out.println(test.toString());
+        }
         
         Simulator.header("Searching and Sorting Test completed!");
     }   
