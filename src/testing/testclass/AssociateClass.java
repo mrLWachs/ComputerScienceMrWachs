@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 /**
  * AssociateClass.java - another class associated with the test class
- class of the test class
  * 
  * @author Mr. Wachs
  * @since Dec 16, 2016
@@ -17,28 +16,14 @@ public class AssociateClass implements Serializable, Comparable<Object>
     
     /** Randomly generated data for this class */
     public String theString;
-    /** The text of all member data stored */
-    private String values;
-    
-    
-    /**
-     * Default Constructor sets class properties
-     * 
-     * @param length the size to make all arrays and random values
-     */
-    public AssociateClass(int length) {
-        theString = TestClass.text.random(length);
-        values    = theString + TestClass.DELIMIT;
-    }
+
     
     /**
      * Constructor sets class properties 
      * 
-     * @param values text of all member data stored
      * @param theString string value
      */
-    public AssociateClass(String values, String theString) {
-        this.values    = values;
+    public AssociateClass(String theString) {
         this.theString = theString;
     }
     
@@ -49,7 +34,7 @@ public class AssociateClass implements Serializable, Comparable<Object>
      */
     @Override
     public String toString() {  
-        return values;
+        return theString;
     }
         
     /**
@@ -77,7 +62,7 @@ public class AssociateClass implements Serializable, Comparable<Object>
      */
     @Override
     public AssociateClass clone() {
-        return new AssociateClass(this.values,this.theString);
+        return new AssociateClass(this.theString);
     }
     
     /**
@@ -111,7 +96,7 @@ public class AssociateClass implements Serializable, Comparable<Object>
      */
     @Override
     public int hashCode() {
-        return TestClass.generate(values);
+        return TestClass.generate(this.toString());
     }
         
 }

@@ -38,6 +38,9 @@ public class LinkedList <T>
     /** The number of nodes in the list, immutable property */
     private int length;
     
+    /** the longest "word" size of the largest node data */
+    public int longestWord;
+    
     /**
      * Default constructor, set class properties
      */
@@ -90,6 +93,7 @@ public class LinkedList <T>
     public boolean addFront(T data) {
         if (data == null) return false;     // null data cannot be added        
         Node<T> node = new Node<>(data);    // new node memory created 
+        checkForLongest(node);
         // Scenarios to consider:    
         // 1) empty list
         // 2) list of 1 or more nodes
@@ -114,6 +118,7 @@ public class LinkedList <T>
     public boolean addBack(T data) {
         if (data == null) return false;     // null data cannot be added            
         Node<T> node = new Node<>(data);    // new node memory created    
+        checkForLongest(node);
         if (isEmpty()) {                    // adding first node
             head = tail = node;             // set references
         }
@@ -149,6 +154,7 @@ public class LinkedList <T>
         if (data == null)    return false;          // invalid data
         Node current = getNode(index);              // get to node at index
         current.data = data;                        // change node data
+        checkIfLongest(current);
         return true;                                // operation successful
     }
     
@@ -180,6 +186,7 @@ public class LinkedList <T>
         T data = (T)head.data;                  // store head data
         if (length == 1) finalize();            // 1 node list, wipe list
         else {                
+            checkIfLongest(head);
             head = head.next;                   // advanced head reference
             head.previous.next = null;          // cut old head reference
             head.previous = null;               // cut reference to old head
@@ -198,7 +205,8 @@ public class LinkedList <T>
         if (isEmpty()) return null;             // no back to remove
         T data = (T)tail.data;                  // store tail data
         if (length == 1) finalize();            // 1 node list, wipe list
-        else {                
+        else {   
+            checkIfLongest(tail);
             tail = tail.previous;               // advanced tail reference
             tail.next.previous = null;          // cut old tail reference
             tail.next = null;                   // cut reference to old tail
@@ -238,6 +246,7 @@ public class LinkedList <T>
         if (!inRange(index)) return false;              // index out of range        
         if (index == length-1) return addBack(data);    // add to end of list
         Node<T> node = new Node<>(data);                // create node object
+        checkForLongest(node);
         Node current = getNode(index);                  // get to index spot
         node.next = current.next;                       // set proper references
         current.next.previous = node;
@@ -259,6 +268,7 @@ public class LinkedList <T>
         if (!inRange(index)) return false;              // index out of range        
         if (index == 0)      return addFront(data);     // add to start of list
         Node<T> node = new Node<>(data);                // create node object
+        checkForLongest(node);
         Node current = getNode(index);                  // get to index spot
         node.previous = current.previous;               // set proper references
         current.previous.next = node;
@@ -300,6 +310,7 @@ public class LinkedList <T>
         if (index == 0)        return removeFront();    // remove first
         if (index == length-1) return removeBack();     // remove last
         Node current = getNode(index);                  // get to index
+        checkIfLongest(current);
         current.next.previous = current.previous;       // change references
         current.previous.next = current.next;
         current.next = current.previous = null;        
@@ -739,6 +750,41 @@ public class LinkedList <T>
         if (index < 0)       return false;  // index before first valid number
         if (index >= length) return false;  // index after last valid number
         return true;                        // index is valid
+    }
+
+    /**
+     * Checks as new data is added if it has the longest "word" length, and 
+     * if it does, it stores that length
+     * 
+     * @param node the Node to check the "word" length for
+     */
+    private void checkForLongest(Node<T> node) {
+        int wordLength = node.toString().length();
+        if (longestWord == 0 || wordLength > longestWord) 
+            longestWord = wordLength;
+    }
+    
+    /**
+     * Checks to see if when removing a node if it was the longest "word" 
+     * length node, if it was it finds the new longest "word" length node data
+     * 
+     * @param node the Node to check the "word" length for
+     */
+    private void checkIfLongest(Node<T> node) {
+        int wordLength = node.toString().length();
+        if (wordLength == longestWord) {
+            Node current = head;
+            int newLongestWord = 0;
+            while (current != null) {
+                int currentLength = current.toString().length();
+                if (currentLength != longestWord && 
+                    currentLength > newLongestWord) {
+                    newLongestWord = currentLength;
+                }
+                current = current.next;                
+            }
+            longestWord = newLongestWord;
+        }
     }
         
 }

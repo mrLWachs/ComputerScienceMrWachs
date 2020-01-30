@@ -30,10 +30,14 @@ public class Text
     private final String MATRIX_DIVIDE   = "\t"; 
     private final String NEW_LINE        = "\n";     
     private final String DICTIONARY_FILE = "/tools/dictionary.txt";
-     
-    private LinkedList<String>  words;
-    private FileHandler<String> fileHandler;
-    private Numbers             numbers;
+         
+    private        FileHandler<String> fileHandler;
+    private        Numbers             numbers;
+    private static LinkedList<String>  words;
+    
+    /** The longest word (in characters) in the dictionary of words */
+    public static int longestWord;
+    
     
     /**
      * Default class constructor sets class properties
@@ -41,15 +45,18 @@ public class Text
     public Text() {
         final String ERROR = "URI Syntax Error: ";
         numbers = new Numbers();
-        try {
-            URL  url    = getClass().getResource(DICTIONARY_FILE);
-            URI  uri    = url.toURI();
-            File file   = new File(uri);        
-            fileHandler = new FileHandler<>();
-            words       = fileHandler.openList(file);
-        }
-        catch (URISyntaxException error) {
-            System.out.println(ERROR + error.getMessage());
+        if (words == null) {
+            try {
+                URL  url    = getClass().getResource(DICTIONARY_FILE);
+                URI  uri    = url.toURI();
+                File file   = new File(uri);        
+                fileHandler = new FileHandler<>();
+                words       = fileHandler.openList(file);
+                longestWord = words.longestWord;
+            }
+            catch (URISyntaxException error) {
+                System.out.println(ERROR + error.getMessage());
+            }
         }
     }
      
@@ -100,6 +107,20 @@ public class Text
         int high  = words.size()-1;
         int index = numbers.random(low, high);
         return words.get(index);
+    }
+    
+    /**
+     * Retrieves a random word from a dictionary file
+     * 
+     * @param length the length (in characters) of the word to generate
+     * @return a random word from a dictionary file
+     */
+    public String randomWord(int length) {
+        String word = randomWord();
+        while (word.length() != length) {
+            word = randomWord();
+        }
+        return word;
     }
     
     /**
@@ -207,6 +228,7 @@ public class Text
      * @return a string of formatted text
      */
     public <T> String toString(T[] array) {
+        if (array == null) return "null";
         String text = ARRAY_START;
         for (int i = 0; i < array.length-1; i++) {
             text += array[i].toString() + ARRAY_DIVIDE;

@@ -6,8 +6,7 @@ package testing.testclass;
 import java.io.Serializable;
 
 /**
- * BaseClass.java - a base class for the testing class to inherit from
- primitive data properties
+ * BaseClass.java - a base class for the testing class 
  * 
  * @author Mr. Wachs 
  * @since Dec 1, 2016
@@ -17,59 +16,15 @@ public class BaseClass implements Serializable, Comparable<Object>
         
     /** Randomly generated data for this class */
     protected boolean theBoolean;
-    /** Randomly generated data for this class */
-    protected int theInteger;
-    /** Randomly generated data for this class */
-    protected double theDouble;
-    /** Randomly generated data for this class */
-    protected char theCharacter;
-    /** The text of all member data stored */
-    private String values;
-    /** The length for size generations */ 
-    public static int length;  
-    
+        
     
     /**
-     * Default Constructor sets class properties
+     * Default constructor sets class properties
      * 
-     * @param length the size to make all arrays and random values
-     */
-    public BaseClass(int length) {    
-        this.length  = length;
-        theBoolean   = TestClass.numbers.random();
-        theInteger   = TestClass.numbers.random(0, length);
-        theDouble    = TestClass.numbers.random(0d, (double)length);
-        theCharacter = TestClass.text.random(TestClass.ALPHA_LOW, 
-                                             TestClass.ALPHA_HIGH);
-        values  = Boolean.toString(theBoolean)     + TestClass.DELIMIT; 
-        values += Integer.toString(theInteger)     + TestClass.DELIMIT; 
-        values += Double.toString(theDouble)       + TestClass.DELIMIT; 
-        values += Character.toString(theCharacter) + TestClass.DELIMIT;
-    }
-
-    /**
-     * Constructor sets class properties
-     * 
-     * @param values text of all member data stored
      * @param theBoolean Boolean value
-     * @param theInteger integer value
-     * @param theDouble double value
-     * @param theCharacter character value
      */
-    public BaseClass(String values,
-                     boolean theBoolean,
-                     int theInteger,
-                     double theDouble,
-                     char theCharacter) {    
-        this.values       = values;
-        this.theBoolean   = theBoolean;
-        this.theInteger   = theInteger;
-        this.theDouble    = theDouble;
-        this.theCharacter = theCharacter;
-        values  = Boolean.toString(theBoolean)     + TestClass.DELIMIT; 
-        values += Integer.toString(theInteger)     + TestClass.DELIMIT; 
-        values += Double.toString(theDouble)       + TestClass.DELIMIT; 
-        values += Character.toString(theCharacter) + TestClass.DELIMIT;
+    public BaseClass(boolean theBoolean) { 
+        this.theBoolean = theBoolean;
     }
     
     /**
@@ -79,7 +34,7 @@ public class BaseClass implements Serializable, Comparable<Object>
      */
     @Override
     public String toString() {   
-        return values;
+        return Boolean.toString(theBoolean);
     }
 
     /**
@@ -107,11 +62,7 @@ public class BaseClass implements Serializable, Comparable<Object>
      */
     @Override
     public BaseClass clone() {
-        return new BaseClass(this.values,
-                             this.theBoolean,
-                             this.theInteger,
-                             this.theDouble,
-                             this.theCharacter);
+        return new BaseClass(this.theBoolean);
     }
     
     /**
@@ -145,7 +96,7 @@ public class BaseClass implements Serializable, Comparable<Object>
      */
     @Override
     public int hashCode() {  
-        return TestClass.generate(values);
+        return TestClass.generate(this.toString());
     }
 
 }
