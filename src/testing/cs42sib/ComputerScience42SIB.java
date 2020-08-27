@@ -4,7 +4,6 @@ package testing.cs42sib;
 
 /** required imports */
 import io.Simulator;
-import io.System;
 import testing.testclass.Test;
 
 
@@ -29,7 +28,7 @@ public class ComputerScience42SIB
         new PermanentStorageTest();
         new SearchSortTest();
         new StacksQueuesTest();
-        new TreesTest();        
+        new TreesTest();      
         Simulator.header("Computer Science 42SIB complete!");
     }
     

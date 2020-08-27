@@ -4,6 +4,7 @@ package testing;
 /** required imports */
 import io.Simulator;
 import testing.cs30s.ComputerScience30S;
+import testing.cs30s.ComputerScience30S;
 import testing.cs40s.ComputerScience40S;
 import testing.cs42sib.ComputerScience42SIB;
 

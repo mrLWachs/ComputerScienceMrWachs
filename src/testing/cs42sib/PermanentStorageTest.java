@@ -4,7 +4,6 @@ package testing.cs42sib;
 
 /** required imports */
 import io.Simulator;
-import io.System;
 
 
 /**
@@ -23,7 +22,7 @@ public class PermanentStorageTest
         Simulator.header("Permanent Storage Test started...");
         
         
-        
+                        
         Simulator.header("Permanent Storage Test completed!");
     }   
 

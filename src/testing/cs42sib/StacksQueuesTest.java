@@ -4,7 +4,6 @@ package testing.cs42sib;
 
 /** required imports */
 import io.Simulator;
-import io.System;
 
 
 /**
@@ -23,7 +22,7 @@ public class StacksQueuesTest
         Simulator.header("Stacks and Queues Test started...");
         
         
-        
+                
         Simulator.header("Stacks and Queues Test completed!");
     }   
 

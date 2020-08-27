@@ -20,7 +20,6 @@ import java.io.PrintWriter;
  * @author Mr. Wachs 
  * @param <T> the generic data type to use
  * @since Dec 6, 2017 
- * @instructor Mr. Wachs
  */
 public class FileHandler <T>
 {
@@ -412,7 +411,7 @@ public class FileHandler <T>
      * @return a LinkedList of Character contents or null
      */
     public LinkedList<Character> openCharCollection(File file) {
-        LinkedList<Integer> list = openASCIICollection(file);
+        LinkedList<Integer>   list       = openASCIICollection(file);
         LinkedList<Character> characters = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
             int       value1 = list.get(i).intValue();
